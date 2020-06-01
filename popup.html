@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        width: 100px;
+      }
+      label {
+        display: block;
+        font-size: 16px;
+        user-select: none;
+      }
+      label > input[type='checkbox'],
+      label > span {
+        vertical-align: middle;
+      }
+      input[type='checkbox'] {
+        width: 16px;
+        height: 16px;
+      }
+    </style>
+  </head>
+  <body>
+    <label>
+      <input type="checkbox" id="enabled" />
+      <span>Enable</span>
+    </label>
+
+    <script src="popup.js"></script>
+  </body>
+</html>
