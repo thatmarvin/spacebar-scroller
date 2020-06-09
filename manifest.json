@@ -5,7 +5,7 @@
   "manifest_version": 2,
   "permissions": ["storage"],
   "browser_action": {
-    "default_popup": "popup.html",
+    "default_popup": "src/popup.html",
     "default_icon": {
       "16": "images/get_started16.png",
       "32": "images/get_started32.png",
@@ -22,7 +22,7 @@
   "content_scripts": [
     {
       "matches": ["<all_urls>"],
-      "js": ["scroll-fixer.js"]
+      "js": ["dist/scroll-fixer.js"]
     }
   ]
 }

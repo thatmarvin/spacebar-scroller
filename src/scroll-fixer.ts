@@ -1,4 +1,6 @@
-function guessElement(point) {
+type Point = [number, number];
+
+function guessElement(point: Point) {
   // Find the fixed/sticky element closest to the root
   let resultEl = null;
   let sampledEl = document.elementFromPoint(...point);
@@ -17,7 +19,7 @@ function guessElement(point) {
 // The element might only be partially visible due to things like relative
 // positioning or translateY's.
 function getVisibleHeaderHeight() {
-  const point = [window.innerWidth / 3, 10];
+  const point: Point = [window.innerWidth / 3, 10];
 
   const element = guessElement(point);
   if (!element) return 0;
@@ -27,7 +29,7 @@ function getVisibleHeaderHeight() {
 }
 
 function getVisibleFooterHeight() {
-  const point = [window.innerWidth / 3, window.innerHeight - 10];
+  const point: Point = [window.innerWidth / 3, window.innerHeight - 10];
 
   const element = guessElement(point);
   if (!element) return 0;
@@ -36,12 +38,13 @@ function getVisibleFooterHeight() {
   return window.innerHeight - top;
 }
 
-function onKeyDown(event) {
+function onKeyDown(event: KeyboardEvent) {
   const { key, metaKey, ctrlKey, shiftKey, target } = event;
+  const element = target as HTMLElement;
   const isTextField =
-    target.nodeName === 'INPUT' ||
-    target.nodeName === 'TEXTAREA' ||
-    target.hasAttribute('contenteditable');
+    element.nodeName === 'INPUT' ||
+    element.nodeName === 'TEXTAREA' ||
+    element.hasAttribute('contenteditable');
   const isPagingDown = key === ' ' || key === 'PageDown';
   const isPagingUp = (key === ' ' && shiftKey) || key === 'PageUp';
 
@@ -72,11 +75,11 @@ const excludeList = ['youtube.com'];
 
 function attach() {
   if (excludeList.some((match) => location.hostname.includes(match))) return;
-  window.addEventListener('keydown', onKeyDown, { useCapture: false });
+  window.addEventListener('keydown', onKeyDown);
 }
 
 function detach() {
-  window.removeEventListener('keydown', onKeyDown, { useCapture: false });
+  window.removeEventListener('keydown', onKeyDown);
 }
 
 chrome.storage.sync.get(['isEnabled'], ({ isEnabled }) => {
