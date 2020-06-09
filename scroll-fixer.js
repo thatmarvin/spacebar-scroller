@@ -37,11 +37,16 @@ function getVisibleFooterHeight() {
 }
 
 function onKeyDown(event) {
-  const { key, metaKey, ctrlKey, shiftKey } = event;
+  const { key, metaKey, ctrlKey, shiftKey, target } = event;
+  const isTextField =
+    target.nodeName === 'INPUT' ||
+    target.nodeName === 'TEXTAREA' ||
+    target.hasAttribute('contenteditable');
   const isPagingDown = key === ' ' || key === 'PageDown';
   const isPagingUp = (key === ' ' && shiftKey) || key === 'PageUp';
 
-  if (ctrlKey || metaKey || (!isPagingDown && !isPagingUp)) return;
+  if (ctrlKey || metaKey || (!isPagingDown && !isPagingUp) || isTextField)
+    return;
 
   const headerHeight = getVisibleHeaderHeight();
   const footerHeight = getVisibleFooterHeight();
@@ -63,12 +68,15 @@ function onKeyDown(event) {
   });
 }
 
+const excludeList = ['youtube.com'];
+
 function attach() {
-  window.addEventListener('keydown', onKeyDown, { useCapture: true });
+  if (excludeList.some((match) => location.hostname.includes(match))) return;
+  window.addEventListener('keydown', onKeyDown, { useCapture: false });
 }
 
 function detach() {
-  window.removeEventListener('keydown', onKeyDown, { useCapture: true });
+  window.removeEventListener('keydown', onKeyDown, { useCapture: false });
 }
 
 chrome.storage.sync.get(['isEnabled'], ({ isEnabled }) => {
